@@ -1,5 +1,5 @@
 // Fetch TeamInfo //
-const teamendpoint = '/api/teamCustom';
+const teamendpoint = '/api/team-custom';
 const teamlist = [];
 
 const searchInput = document.querySelector('.input');
@@ -20,42 +20,29 @@ function displayMatches() {
   const matchArray = findMatches(this.value, teamlist);
   const html = matchArray.map((team) => {
     const regex = new RegExp(this.value, 'gi');
-    const TeamName = team.team_name;
     // .replace(regex, `<span class="hl">${this.value}</span>`);
-    const teamlocation = team.team_location;
-    const teamfounded = team.year_founded;
-    const stadium = team.stadium_name;
-    const playeramount = team.player_amount;
-    const ownername = team.owner;
-    const headcoach = team.head_coach;
-    const genmanager = team.general_manager;
-    const headphysician = team.head_physician;
-    const tceo = team.ceo;
-    const tcfo = team.cfo;
     return `
       <li>
-      <div class = "TeamInfo li box is-small has-background-orange is-capitalized>">
-        <span class="name"> Name: ${TeamName}</span>
+      <div class="box">
+        <span class="name">${team.team_location} ${team.team_name}</span>
         <br>
-        <span class="Year">Year of Team Foundation: ${teamfounded}</span>
+        <span class="Year">Year of Team Foundation: ${team.year_founded}</span>
         <br>
-        <span class="Stadium">Home Stadium :${stadium}</span>
+        <span class="Stadium">Home Stadium :${team.stadium_name}</span>
         <br>
-        <span class="Location">Home City: ${teamlocation}</span>
+        <span class="Players">Roster Size: ${team.player_amount}</span>
         <br>
-        <span class="Players">Number of Total Players: ${playeramount}</span>
+        <span class="Owner">Owner: ${team.owner}</span>
         <br>
-        <span class="Owner">Owner: ${ownername}</span>
+        <span class="Head Coach">Head Coach: ${team.head_coach}</span>
         <br>
-        <span class="Head Coach">Head Coach: ${headcoach}</span>
+        <span class="General Manager">General Manager: ${team.general_manager}</span>
         <br>
-        <span class="General Manager">General Manager: ${genmanager}</span>
+        <span class="Head Physician">Head Physician: ${team.head_physician}</span>
         <br>
-        <span class="Head Physician">Head Physician: ${headphysician}</span>
+        <span class="CEO">Team CEO: ${team.ceo}</span>
         <br>
-        <span class="CEO">Team CEO: ${tceo}</span>
-        <br>
-        <span class="CFO">Team CFO: ${tcfo}</span>
+        <span class="CFO">Team CFO: ${team.cfo}</span>
       </div>
       </li>
     `;
