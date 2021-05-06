@@ -1,7 +1,8 @@
 export default (sequelize, DataTypes) => {
-  const PlayerStats = sequelize.define('player_stats',
+  const PlayerStats = sequelize.define(
+    'player_stats',
     {
-      gamestas_id: {
+      gamestats_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true
@@ -29,6 +30,7 @@ export default (sequelize, DataTypes) => {
         foreignKey: true
       }
     },
-    { freezeTableName: true, timestamps: false });
+    { freezeTableName: true, timestamps: false }
+  );
   return PlayerStats;
-};
+}
