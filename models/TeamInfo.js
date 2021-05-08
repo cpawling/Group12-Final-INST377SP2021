@@ -28,7 +28,7 @@ export default (sequelize, DataTypes) => {
     // TeamInfo.hasOne(models.Macros, {
     //   foreignKey: 'meal_id'
     // });
-    TeamInfo.hasMany(models.PlayerInfo, {
+    TeamInfo.belongsTo(models.PlayerInfo, {
       foreignKey: 'team_id'
     });
   };

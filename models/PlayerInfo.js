@@ -39,7 +39,7 @@ export default (sequelize, DataTypes) => {
   );
 
   PlayerInfo.associate = (models) => {
-    PlayerInfo.belongsTo(models.TeamInfo, {
+    PlayerInfo.hasOne(models.TeamInfo, {
       foreignKey: 'team_id'
     });
     // TeamInfo.hasMany(models.Diners, {
