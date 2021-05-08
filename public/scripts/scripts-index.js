@@ -1,4 +1,4 @@
-// random int function for whole meal selection
+// random int function
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -48,7 +48,7 @@ async function teamComparison() {
   console.log('enter teamComparison');
 
   // const variable declarations
-  const teamEndpoint = '/api/teamCustom';
+  const teamEndpoint = '/api/team-custom';
   const request = await fetch(teamEndpoint);
   const results = document.querySelector('.team-comp');
 
