@@ -23,5 +23,15 @@ export default (sequelize, DataTypes) => {
     },
     { freezeTableName: true, timestamps: false }
   );
+
+  TeamInfo.associate = (models) => {
+    // TeamInfo.hasOne(models.Macros, {
+    //   foreignKey: 'meal_id'
+    // });
+    TeamInfo.hasMany(models.PlayerInfo, {
+      foreignKey: 'team_id'
+    });
+  };
+
   return TeamInfo;
 }

@@ -6,7 +6,8 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         unique: true,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
       },
       salary: {
         type: DataTypes.INTEGER
@@ -31,10 +32,20 @@ export default (sequelize, DataTypes) => {
       },
       team_id: {
         type: DataTypes.INTEGER,
-        foreignKey: true
+        // foreignKey: true
       }
     },
     { freezeTableName: true, timestamps: false }
   );
+
+  PlayerInfo.associate = (models) => {
+    PlayerInfo.belongsTo(models.TeamInfo, {
+      foreignKey: 'team_id'
+    });
+    // TeamInfo.hasMany(models.Diners, {
+    //   foreignKey: 'diner_id'
+    // });
+  };
+
   return PlayerInfo;
 }

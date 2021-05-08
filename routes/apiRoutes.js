@@ -73,7 +73,25 @@ router.route('/player_biostats')
     }
   })
   .post(async (req, res) => {
-    res.send('Action unavailable');
+    console.info('POST request to /player_biostats', req.body);
+
+    const playersBiostats = await db.PlayerInfo.findAll();
+    const currentId = (await playersBiostats.length) + 1;
+    try {
+      const newPlayerBiostat = await db.PlayerBiostats.create({
+        biostats_id: currentId,
+        birthdate: req.body.birthdate,
+        age: req.body.age,
+        height_inches: req.body.height_inches,
+        weight_pounds: req.body.weight_pounds,
+        player_id: req.body.currentId
+      });
+      // res.json(newPlayer);
+      res.json({message: 'not yet'});
+    } catch (err) {
+      console.error(err);
+      res.json('Server error');
+    }
   })
   .put(async (req, res) => {
     res.send('Action unavailable');
@@ -120,13 +138,34 @@ router.route('/player_info')
     }
   })
   .post(async (req, res) => {
-    res.send('Action unavailable');
+    console.info('POST request to /player_info', req.body);
+
+    const players = await db.PlayerInfo.findAll();
+    const currentId = (await players.length) + 1;
+    try {
+      const newPlayer = await db.PlayerInfo.create({
+        player_id: currentId,
+        salary: req.body.salary,
+        jersey_number: req.body.jersey_number,
+        position: req.body.position,
+        player_college: req.body.player_college,
+        nba_debut: req.body.nba_debut,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        team_id: req.body.team_id
+      });
+      // res.json(newPlayer);
+      res.json({message: 'not yet'});
+    } catch (err) {
+      console.error(err);
+      res.json('Server error');
+    }
   })
   .put(async (req, res) => {
     try {
       await db.PlayerInfo.update(
         {
-          salary: req.body.meal_salary,
+          salary: req.body.player_salary,
           jersey_number: req.body.jersey_number,
           position: req.body.position,
           player_college: req.body.player_college,
@@ -507,17 +546,16 @@ router.route('/team_staff/:staff_id')
 //   }
 // });
 
-/// ///////////////////////////
-/// /// Custom SQL Endpoint ///
-/// ///////////////////////////
-const teamCustom = `SELECT team_location, team_name, year_founded, name AS stadium_name, head_coach, general_manager
-FROM team_info JOIN team_staff
-	USING (team_id)
-JOIN stadium_info
-  USING (team_id)
+/// ////////////////////////////////
+/// /// Team Custom SQL Endpoint ///
+/// ////////////////////////////////
+const teamCustom = `SELECT team_location, team_name, year_founded, name AS
+stadium_name, head_coach, general_manager, owner, head_physician, ceo, cfo
+FROM team_info JOIN team_staff USING (team_id)
+JOIN stadium_info USING (team_id)
 ORDER BY year_founded, team_location;`;
 
-router.route('/teamCustom')
+router.route('/team-custom')
   .get(async (req, res) => {
     try {
       const result = await db.sequelizeDB.query(teamCustom, {

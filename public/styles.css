@@ -145,3 +145,8 @@ li {
 .box {
     background-color: #c5c5c5;
 }
+
+/* input form styles */
+label {
+    color: #2b2b2b;
+}
