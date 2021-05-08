@@ -550,7 +550,7 @@ router.route('/team_staff/:staff_id')
 /// /// Team Custom SQL Endpoint ///
 /// ////////////////////////////////
 const teamCustom = `SELECT team_location, team_name, year_founded, name AS
-stadium_name, head_coach, general_manager, owner, head_physician, ceo, cfo
+stadium_name, player_amount AS roster_size, head_coach, general_manager, owner, head_physician, ceo, cfo
 FROM team_info JOIN team_staff USING (team_id)
 JOIN stadium_info USING (team_id)
 ORDER BY year_founded, team_location;`;
