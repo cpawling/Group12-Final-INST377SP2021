@@ -28,9 +28,9 @@ function displayMatches() {
         <br>
         <span class="Year">Year of Team Foundation: ${team.year_founded}</span>
         <br>
-        <span class="Stadium">Home Stadium :${team.stadium_name}</span>
+        <span class="Stadium">Home Stadium: ${team.stadium_name}</span>
         <br>
-        <span class="Players">Roster Size: ${team.player_amount}</span>
+        <span class="Players">Roster Size: ${team.roster_size}</span>
         <br>
         <span class="Owner">Owner: ${team.owner}</span>
         <br>
