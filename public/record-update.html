@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Team 12's Group Project</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <!-- <link href="~bulma-calendar/dist/css/bulma-calendar.min.css" rel="stylesheet"> -->
         <link rel="stylesheet" type="text/css" href="styles.css"/>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" 
         integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
@@ -37,7 +38,171 @@
         </div>
 
         <div class="main">
-            <h2 style="text-align: center; padding: 40px">Record Update page content will go here (in record-update)</h2>
+            <!-- FORM SELECTION BUTTONS -->
+            <div class="columns" id="formsSelection">
+                <div class="column is-4">
+                    <button class="button is-fullwidth" id="addButton">Add New Player</button>
+                </div>
+
+                <div class="column is-4">
+                    <button class="button is-fullwidth" id="updateButton">Update Player's Stats</button>
+                </div>
+
+                <div class="column is-4">
+                    <button class="button is-fullwidth" id="deleteButton">Remove Player Record</button>
+                </div>
+            </div>
+
+            <!-- ADD PLAYER FORM -->
+            <form id="addRecordSubmit" class="form box">
+                <h3 class="title is-3 has-text-centered">ADD NEW PLAYER</h3>
+                <div class="columns" id="addRowOne">
+                    <div class="column is-4 is-offset-2">
+                        <label for="playerFirstName">First Name: </label>
+                        <input class="input" type="text" name="playerFirstName" id="playerFirstName"/>
+                    </div>
+                    
+                    <div class="column is-4">
+                        <label for="playerLastName">Last Name: </label>
+                        <input class="input" type="text" name="playerLastName" id="playerLastName"/>
+                    </div>
+                </div>
+                
+                <div class="columns" id="addRowTwo">
+                    <div class="column is-4 is-offset-1">
+                        <label for="playerSalary">Player Salary: </label>
+                        <input class="input" type="text" name="playerSalary" id="playerSalary"/>
+                    </div>
+
+                    <div class="column is-2">
+                        <label for="jerseyNumber">Jersey Number: </label>
+                        <input class="input" type="text" name="jerseyNumber" id="jerseyNumber"/>
+                    </div>
+
+                    <div class="column is-4">
+                        <label for="playerPosition">Position: </label>
+                        <div class="select is-fullwidth">
+                            <select name="playerPosition" id="playerPosition">
+                                <option value="Center">Center</option>
+                                <option value="Point Guard">Point Guard</option>
+                                <option value="Power Forward">Power Forward</option>
+                                <option value="Shooting Guard">Shooting Guard</option>
+                                <option value="Small Forward">Small Forward</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="columns" id="addRowThree">
+                    <div class="column is-3 is-offset-2">
+                        <label for="playerCollege">Player College: </label>
+                        <input class="input" type="text" name="playerCollege" id="playerCollege"/>
+                    </div>
+
+                    <div class="column is-2">
+                        <label for="playerDebut">NBA Debut: </label>
+                        <input class="input" type="text" name="playerDebut" id="playerDebut"/>
+                    </div>
+                    
+                    <div class="column is-3">
+                        <label for="playerTeam">Team: </label>
+                        <div class="select is-fullwidth">
+                            <select name="playerTeam" id="playerTeam">
+                                <!-- POPULATE TEAM OPTIONS HERE -->
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns" id="addRowFour">
+                    <div class="column is-2 is-offset-3">
+                        <label for="playerBirthdate">Birthdate: </label>
+                        <input class="input" type="date" name="playerBirthdate" id="playerBirthdate"/>
+                    </div>
+
+                    <div class="column is-2">
+                        <label for="playerHeight">Height (inches): </label>
+                        <input class="input" type="text" name="playerHeight" id="playerHeight"/>
+                    </div>
+                    
+                    <div class="column is-2">
+                        <label for="playerWeight">Weight (pounds): </label>
+                        <input class="input" type="text" name="playerWeight" id="playerWeight"/>
+                    </div>
+                </div>
+
+                <div class="columns" id="addButtonRow">
+                    <div class="column is-2 is-offset-5">
+                        <button class="button is-fullwidth" type="submit" value="Add">Add</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- UPDATE PLAYER FORM -->
+            <form id="updateRecordSubmit" class="form box hidden">
+                <h3 class="title is-3 has-text-centered">UPDATE PLAYER'S STATS</h3>
+                <div class="columns" id="updateRowOne">
+                    <div class="column is-4 is-offset-2">
+                        <label for="pFirstName">First Name: </label>
+                        <input class="input" type="text" name="pFirstName" id="pFirstName"/>
+                    </div>
+                    
+                    <div class="column is-4">
+                        <label for="pLastName">Last Name: </label>
+                        <input class="input" type="text" name="pLastName" id="pLastName"/>
+                    </div>
+                </div>
+                
+                <div class="columns" id="updateRowTwo">
+                    <div class="column is-4 is-offset-3">
+                        <label for="updatedStat">Stat Category: </label>
+                        <div class="select is-fullwidth">
+                            <select name="updatedStat" id="updatedStat">
+                                <option value="shooting_percentage">Shooting % (e.g. 0.634)</option>
+                                <option value="three_pt_pct">3-Point % (e.g. 0.428)</option>
+                                <option value="rebounds_per_game">Rebounds per Game (e.g. 9.3)</option>
+                                <option value="assists_per_game">Assists per Game (e.g. 12.7)</option>
+                                <option value="steals_per_game">Steals per Game (e.g. 5.9)</option>
+                                <option value="blocks_per_game">Blocks per Game (e.g. 3.4)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="column is-2">
+                        <label for="statInput">Updated Stat: </label>
+                        <input class="input" type="text" name="statInput" id="statInput"/>
+                    </div>
+                </div>
+
+                <div class="columns" id="updateButtonRow">
+                    <div class="column is-2 is-offset-5">
+                        <button class="button is-fullwidth" type="submit" value="Update">Update</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- DELETE PLAYER RECORD FORM -->
+            <form id="deleteRecordSubmit" class="form box hidden">
+                <h3 class="title is-3 has-text-centered">REMOVE PLAYER RECORD</h3>
+                <div class="columns" id="deleteRowOne">
+                    <div class="column is-4 is-offset-2">
+                        <label for="firstName">First Name: </label>
+                        <input class="input" type="text" name="firstName" id="firstName"/>
+                    </div>
+                    
+                    <div class="column is-4">
+                        <label for="lastName">Last Name: </label>
+                        <input class="input" type="text" name="lastName" id="lastName"/>
+                    </div>
+                </div>
+
+                <div class="columns" id="deleteButtonRow">
+                    <div class="column is-2 is-offset-5">
+                        <button class="button is-fullwidth" type="submit" value="Delete">Remove</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div class="footer">
@@ -48,5 +213,7 @@
 
 
         <script src="/scripts/scripts-bulma-nav.js"></script>
+        <script src="/scripts/scripts-record-update.js"></script>
+        <!-- <script src="~bulma-calendar/dist/js/bulma-calendar.min.js"></script> -->
     </body>
 </html>
