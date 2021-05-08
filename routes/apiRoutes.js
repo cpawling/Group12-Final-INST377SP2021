@@ -130,7 +130,7 @@ router.route('/player_biostats/:biostats_id')
 router.route('/player_info')
   .get(async (req, res) => {
     try {
-      const info = await db.PlayerInfo.findAll();
+      const info = await db.PlayerInfo.findAll({ include: db.TeamInfo });
       res.send(info);
     } catch (err) {
       console.error(err);
@@ -140,7 +140,7 @@ router.route('/player_info')
   .post(async (req, res) => {
     console.info('POST request to /player_info', req.body);
 
-    const players = await db.PlayerInfo.findAll();
+    const players = await db.PlayerInfo.findAll({ include: db.TeamInfo });
     const currentId = (await players.length) + 1;
     try {
       const newPlayer = await db.PlayerInfo.create({
