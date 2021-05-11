@@ -115,6 +115,33 @@ async function getTeamId(teamInput) {
   return teamId;
 }
 
+async function getPlayerId(fName, lName) {
+  console.log('entered getPlayerId');
+
+  // const variable declarations
+  const playerEndpoint = '/api/player_info';
+  const request = await fetch(playerEndpoint);
+
+  // check successful request
+  if (request.ok) {
+    console.log('playerEndpoint fetched');
+  } else {
+    alert(`HTTP-Error: ${request.status}`);
+  }
+
+  const players = await request.json();
+
+  let playerId = -1;
+
+  players.forEach((player) => {
+    if ((player.first_name === fName) && (player.last_name === lName)) {
+      playerId = player.player_id;
+    }
+  });
+
+  return playerId;
+}
+
 async function windowActions() {
   console.log('loaded Record Update window');
 
@@ -183,6 +210,8 @@ async function windowActions() {
         }
       )
     });
+
+    console.log('New player added');
   });
 
   const updateForm = document.querySelector('#updateRecordSubmit');
@@ -198,8 +227,24 @@ async function windowActions() {
 
     // stat dropdown inside event listener for after stat upadte selection
     const statCategory = document.querySelector('#updatedStat');
-    const playerTeamId = getTeamId(statCategory.value);
+    const statInput = document.querySelector('#statInput');
+    console.log('Player Name: ', updateFirstName.value, updateLastName.value);
+    console.log('statCategory: ', statCategory.value);
+    console.log('statInput: ', statInput.value);
 
+    const putBiostats = await fetch('/api/player_stats', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+        //   statCategory: statInput.value
+        }
+      )
+    });
+
+    console.log('Player stat updated');
   });
 
   const deleteForm = document.querySelector('#deleteRecordSubmit');
@@ -210,9 +255,39 @@ async function windowActions() {
     console.info('Remove Player Form Submitted', event.target);
 
     // Player name seciton
-    const firstName = document.querySelector('#pFirstName');
-    const lastName = document.querySelector('#pLastName');
+    const firstName = document.querySelector('#firstName');
+    const lastName = document.querySelector('#lastName');
+
+    const playerId = await getPlayerId(firstName.value, lastName.value);
+    console.log('playerId: ', playerId);
+
+    const deleteBiostats = await fetch(`/api/player_stats/${playerId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+          player_id: playerId
+        }
+      )
+    });
+
+    const deletePlayerInfo = await fetch(`/api/player_info/${playerId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+          player_id: playerId
+        }
+      )
+    });
+
+    console.log('Player record removed');
   });
+
 }
 
 window.onload = windowActions;
