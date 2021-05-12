@@ -211,6 +211,24 @@ async function windowActions() {
       )
     });
 
+    const postPlayerstats = await fetch('/api/player_stats', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(
+        {
+          shooting_percentage: -1,
+          three_pt_pct: -1,
+          rebounds_per_game: -1,
+          assists_per_game: -1,
+          steals_per_game: -1,
+          blocks_per_game: -1
+          // player_id: playerId
+        }
+      )
+    });
+
     console.log('New player added');
   });
 
@@ -232,17 +250,53 @@ async function windowActions() {
     console.log('statCategory: ', statCategory.value);
     console.log('statInput: ', statInput.value);
 
-    const putBiostats = await fetch('/api/player_stats', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-        //   statCategory: statInput.value
-        }
-      )
-    });
+    const playerId = await getPlayerId(firstName.value, lastName.value);
+
+    if (statCategory.value === 'shooting_percentage') {
+      const putBiostatsShootPct = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ shooting_percentage: statInput.value })
+      });
+    }
+    else if (statCategory.value === 'three_pt_pct') {
+      const putBiostatsThreePtPct = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ three_pt_pc: statInput.value })
+      });
+    }
+    else if (statCategory.value === 'rebounds_per_game') {
+      const putBiostatsAPG = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rebounds_per_game: statInput.value })
+      });
+    }
+    else if (statCategory.value === 'assists_per_game') {
+      const putBiostatsRPG = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assists_per_game: statInput.value })
+      });
+    }
+    else if (statCategory.value === 'steals_per_game') {
+      const putBiostatsSPG = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ steals_per_game: statInput.value })
+      });
+    }
+    else if (statCategory.value === 'blocks_per_game') {
+      const putBiostatsBPG = await fetch(`/api/player_stats/${playerId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ blocks_per_game: statInput.value })
+      });
+    }
+    else {
+      console.error('Stat updated failed');
+    }
 
     console.log('Player stat updated');
   });
@@ -261,33 +315,26 @@ async function windowActions() {
     const playerId = await getPlayerId(firstName.value, lastName.value);
     console.log('playerId: ', playerId);
 
-    const deleteBiostats = await fetch(`/api/player_stats/${playerId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-          player_id: playerId
-        }
-      )
-    });
-
     const deletePlayerInfo = await fetch(`/api/player_info/${playerId}`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(
-        {
-          player_id: playerId
-        }
-      )
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ player_id: playerId })
+    });
+    
+    const deleteBiostats = await fetch(`/api/player_biostats/${playerId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ player_id: playerId })
+    });
+
+    const deletePlayerStats = await fetch(`/api/player_stats/${playerId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ player_id: playerId })
     });
 
     console.log('Player record removed');
   });
-
 }
 
 window.onload = windowActions;

@@ -75,7 +75,7 @@ router.route('/player_biostats')
   .post(async (req, res) => {
     console.info('POST request to /player_biostats', req.body);
 
-    const playersBiostats = await db.PlayerInfo.findAll();
+    const playersBiostats = await db.PlayerBiostats.findAll();
     const currentId = (await playersBiostats.length) + 1;
     try {
       const newPlayerBiostat = await db.PlayerBiostats.create({
@@ -162,7 +162,7 @@ router.route('/player_info')
         nba_debut: req.body.nba_debut,
         first_name: req.body.first_name,
         last_name: req.body.last_name,
-        team_id_pi: req.body.team_id
+        team_id: req.body.team_id
       });
       // res.json(newPlayer);
       res.json({message: 'not yet'});
@@ -240,7 +240,7 @@ router.route('/player_info/:player_id')
 router.route('/player_stats')
   .get(async (req, res) => {
     try {
-      const stats = await db.PlayerStats.findAll();
+      const stats = await db.PlayerStats.findAll({ include: db.PlayerInfo });
       res.json(stats);
     } catch (err) {
       console.error(err);
@@ -248,37 +248,36 @@ router.route('/player_stats')
     }
   })
   .post(async (req, res) => {
-    res.send('Action unavailable');
-  })
-  .put(async (req, res) => {
+    console.info('POST request to /player_stats', req.body);
+
+    const stats = await db.PlayerStats.findAll({ include: db.PlayerInfo });
+    const currentId = (await stats.length) + 1;
     try {
-      await db.PlayerStats.update(
-        {
-          shooting_percentage: req.body.shooting_percentage,
-          three_pt_pct: req.body.three_pt_pct,
-          rebounds_per_game: req.body.rebounds_per_game,
-          assists_per_game: req.body.assists_per_game,
-          steals_per_game: req.body.steals_per_game,
-          blocks_per_game: req.body.blocks_per_game,
-          player_id: req.body.player_id
-        },
-        {
-          where: {
-            gamestats_id: req.body.gamestats_id
-          }
-        }
-      );
-      res.send('Player Stats Successfully Updated');
+      const newStat = await db.PlayerStats.create({
+        gamestats_id: currentId,
+        shooting_percentage: req.body.shooting_percentage,
+        three_pt_pct: req.body.three_pt_pct,
+        rebounds_per_game: req.body.rebounds_per_game,
+        assists_per_game: req.body.assists_per_game,
+        steals_per_game: req.body.steals_per_game,
+        blocks_per_game: req.body.blocks_per_game,
+        player_id: req.body.player_id
+      });
+      // res.json(newStat);
+      res.json({message: 'not yet'});
     } catch (err) {
       console.error(err);
-      res.send('Server Error at Player Stats PUT');
+      res.json('Server error');
     }
+  })
+  .put(async (req, res) => {
+    res.send('Action unavailable');
   })
   .delete(async (req, res) => {
     res.send('Action unavailable');
   });
 
-router.route('/player_stats/:gamestats_id')
+router.route('/player_stats/:player_id')
   .get(async (req, res) => {
     try {
       const gamestats = await db.PlayerStats.findAll({
@@ -289,26 +288,97 @@ router.route('/player_stats/:gamestats_id')
       res.json(gamestats);
     } catch (err) {
       console.error(err);
-      res.send('Server Error at gamestats_id GET');
+      res.send('Server Error at player_id GET');
     }
   })
   .post(async (req, res) => {
     res.send('Action unavailable');
   })
+
+// try {
+//   await db.PlayerStats.update(
+//     { shooting_percentage: req.body.shooting_percentage },
+//     {
+//       where: {
+//         player_id: req.body.player_id
+//       }
+//     }
+//   );
+//   res.send('Player Stat Successfully Updated');
+// } catch (err) {
+//   console.error(err);
+//   res.send('Server Error at Player Stats PUT');
+// }
+
+// three_pt_pct: req.body.three_pt_pct,
+// rebounds_per_game: req.body.rebounds_per_game,
+// assists_per_game: req.body.assists_per_game,
+// steals_per_game: req.body.steals_per_game,
+// blocks_per_game: req.body.blocks_per_game
+
   .put(async (req, res) => {
-    res.send('Action unavailable');
+    try { // try #1
+      await db.PlayerStats.update(
+        { shooting_percentage: req.body.shooting_percentage },
+        { where: { player_id: req.body.player_id } }
+      );
+      res.send('Player Shooting % Successfully Updated');
+    } catch {
+      try { // try #2
+        await db.PlayerStats.update(
+          { three_pt_pct: req.body.three_pt_pct },
+          { where: { player_id: req.body.player_id } }
+        );
+        res.send('Player 3-Pt % Successfully Updated');
+      } catch {
+        try { // try #3
+          await db.PlayerStats.update(
+            { rebounds_per_game: req.body.rebounds_per_game },
+            { where: { player_id: req.body.player_id } }
+          );
+          res.send('Player Rebounds Successfully Updated');
+        } catch {
+          try { // try #4
+            await db.PlayerStats.update(
+              { assists_per_game: req.body.assists_per_game },
+              { where: { player_id: req.body.player_id } }
+            );
+            res.send('Player Assists Successfully Updated');
+          } catch {
+            try { // try #5
+              await db.PlayerStats.update(
+                { steals_per_game: req.body.steals_per_game },
+                { where: { player_id: req.body.player_id } }
+              );
+              res.send('Player Steals Successfully Updated');
+            } catch {
+              try { // try #6
+                await db.PlayerStats.update(
+                  { blocks_per_game: req.body.blocks_per_game },
+                  { where: { player_id: req.body.player_id } }
+                );
+                res.send('Player Blocks Successfully Updated');
+              } catch (err) {
+                console.error(err);
+                res.send('Server Error at Player Stats PUT');
+              } // end try/catch #6
+            } // end try/catch #5
+          } // end try/catch #4
+        } // end try/catch #3
+      } // end try/catch #2
+    } // end try/catch #1
   })
   .delete(async (req, res) => {
     try {
       await db.PlayerStats.destroy({
         where: {
-          gamestats_id: req.params.gamestats_id
+          player_id: req.params.player_id
         }
       });
       res.send('Successfully Deleted');
     } catch (err) {
       console.error(err);
-      res.send('Server Error at gamestats_id DELETE');
+      res.send('Server Error at player_id DELETE');
     }
   });
 
@@ -790,5 +860,5 @@ router.route('/blocks-custom')
   .delete(async (req, res) => {
     res.send('Action unavailable');
   });
-  
+
 export default router;
