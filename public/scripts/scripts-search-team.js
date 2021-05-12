@@ -62,15 +62,8 @@ function clearResults(e) {
   }
 }
 
-// submit event listener
-// form.addEventListener('submit', async (event) => {
-//   event.preventDefault();
-//   console.log('submit fired', searchInput.value);
-//   displayMatches(event);
-// });
-
 searchInput.addEventListener('change', displayMatches);
 searchInput.addEventListener('keyup', displayMatches);
 
 // backspace/delete event listener
-searchInput.addEventListener('keydown', clearResults);
+searchInput.addEventListener('keyup', clearResults);

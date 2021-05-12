@@ -53,9 +53,6 @@ function playerDisplayMatches() {
     const player_steals_per_game = player.steals_per_game;
     const player_blocks_per_game = player.blocks_per_game;
     
-
-
-   
     return `
       <li>
       <div class = "PlayerInfo li box is-small has-background-orange is-capitalized>">
@@ -107,5 +104,20 @@ function playerDisplayMatches() {
 
 console.log(playerSearchInput);
 
+// backspace/delete clears result list, markers, and resets map
+function clearResults(e) {
+  if (e.keyCode === 8) {
+    console.log('delete pressed');
+
+    // remove results list
+    while (playerInfo2.firstChild) {
+      playerInfo2.removeChild(playerInfo2.firstChild);
+    }
+  }
+}
+
 playerSearchInput.addEventListener('change', playerDisplayMatches);
 playerSearchInput.addEventListener('keyup', playerDisplayMatches);
+
+// backspace/delete event listener
+playerSearchInput.addEventListener('keyup', clearResults);
