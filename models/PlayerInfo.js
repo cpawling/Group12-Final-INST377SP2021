@@ -31,7 +31,7 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.STRING
       },
       team_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
         // foreignKey: true
       }
     },
@@ -41,6 +41,9 @@ export default (sequelize, DataTypes) => {
   PlayerInfo.associate = (models) => {
     PlayerInfo.hasOne(models.TeamInfo, {
       foreignKey: 'team_id'
+    });
+    PlayerInfo.belongsTo(models.PlayerStats, {
+      foreignKey: 'player_id'
     });
     // TeamInfo.hasMany(models.Diners, {
     //   foreignKey: 'diner_id'

@@ -26,11 +26,21 @@ export default (sequelize, DataTypes) => {
         type: DataTypes.FLOAT
       },
       player_id: {
-        type: DataTypes.INTEGER,
-        foreignKey: true
+        type: DataTypes.INTEGER
+        // foreignKey: true
       }
     },
     { freezeTableName: true, timestamps: false }
   );
+
+  PlayerStats.associate = (models) => {
+    PlayerStats.hasOne(models.PlayerInfo, {
+      foreignKey: 'player_id'
+    });
+    // TeamInfo.belongsTo(models.PlayerInfo, {
+    //   foreignKey: 'team_id'
+    // });
+  };
+
   return PlayerStats;
 }
