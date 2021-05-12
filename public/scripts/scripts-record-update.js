@@ -230,6 +230,7 @@ async function windowActions() {
     });
 
     console.log('New player added');
+    alert(`${playerFirstName.value} ${playerLastName.value} successfully added!`);
   });
 
   const updateForm = document.querySelector('#updateRecordSubmit');
@@ -299,6 +300,7 @@ async function windowActions() {
     }
 
     console.log('Player stat updated');
+    alert(`${updateFirstName.value} ${updateLastName.value}'s ${statCategory.value} stat was successfully updated!`);
   });
 
   const deleteForm = document.querySelector('#deleteRecordSubmit');
@@ -334,6 +336,7 @@ async function windowActions() {
     });
 
     console.log('Player record removed');
+    alert(`${firstName.value} ${lastName.value} was successfully removed!`);
   });
 }
 
